@@ -5,7 +5,6 @@ source_sqlserver:
   username: Estancia2
   password: "0n55KV/zuxh\\"
   driver: ODBC Driver 17 for SQL Server
-  table: FreightSummarySource
 
 target_postgres:
   host: data-warehouse-database.c9ccouqwg4es.us-east-2.rds.amazonaws.com

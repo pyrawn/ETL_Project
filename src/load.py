@@ -4,9 +4,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError  
 
 class Loader:
-    
+
     def __init__(self, config: dict | str):
-        self.config = self.load_config(config) if isinstance(config, str) else config
+        self.config = self._load_config(config) if isinstance(config, str) else config
         self.pg_config = self.config["target_postgres"]
         self.engine = self._connect_postgres()
 
@@ -66,4 +66,3 @@ class Loader:
         if isinstance(value, bool):
             return 'TRUE' if value else 'FALSE'
         return str(value)
-

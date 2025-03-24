@@ -18,6 +18,8 @@ class ETL:
 
         df = self._generate_dummy_data()
 
+        df.columns = df.columns.str.lower()
+
         if df.empty:
             print("The DataFrame is empy. No data to load.")
         else: 
