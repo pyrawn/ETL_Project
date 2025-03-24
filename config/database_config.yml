@@ -12,4 +12,4 @@ target_postgres:
   database: macotechwarehouse
   user: postgres
   password: ",58!0a`Br<^q"
-  table: FreightSummary
+  table: freightsummary
