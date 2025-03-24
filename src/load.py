@@ -46,4 +46,24 @@ class Loader:
             print(f"Error loading data into PostgreSQL: {e}")
             raise
 
-    
+    def export_insert_scripts(self, df: pd.DataFrame):
+        print("Generating INSERT statements:")
+        table = self.pg_config["table"]
+        for _, row in df.iterrows():
+            columns = ', '.join([f'"{col}"' for col in row.index])
+            values = ', '.join(
+                [self._format_sql_value(val) for val in row.values]
+            )
+            insert_statement = f'INSERT INTO "{table}" ({columns}) VALUES ({values});'
+            print(insert_statement)
+
+    def _format_sql_value(self, value):
+        if pd.isna(value):
+            return "NULL"
+        if isinstance(value, str):
+            escaped = value.replace("'", "''")
+            return f"'{escaped}'"
+        if isinstance(value, bool):
+            return 'TRUE' if value else 'FALSE'
+        return str(value)
+
