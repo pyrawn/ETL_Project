@@ -1,4 +1,5 @@
 from src.load import Loader
+from src.extract import Extractor
 import pandas as pd
 import yaml
 
@@ -7,13 +8,21 @@ import yaml
 class ETL:
     def __init__(self, config_path="config/database_config.yml"):
         self.config = self._load_config(config_path)
+        self.extractor = Extractor(self.config)
         self.loader = Loader(self.config)
 
-    def _load_config(self, path):
+    def _extract_config(self, path):
         with open(path, "r") as f:
             return yaml.safe_load(f)
         
-    def run(self):
+    def _load_config(self, path):
+        with open(path, "r") as f:
+            return yaml.safe_load(f)
+
+    def run_extractor(self):
+        print(self.extractor.fetch_tables_as_array())
+
+    def run_tranform(self):
         print("Starting ETL process")
 
         df = self._generate_dummy_data()
