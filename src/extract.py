@@ -1,20 +1,21 @@
 from sqlalchemy import create_engine
 import pandas as pd
-
+import yaml
 class Extractor:
-    def __init__(self, driver, server, database, uid, pwd):
-        self.connection_url = (
-            f"mssql+pyodbc://{uid}:{pwd}@{server}/{database}"
-            "?driver=ODBC+Driver+17+for+SQL+Server"
-        )
-        self.engine = None
+    def __init__(self, config: dict | str):
+        self.config = self._load_config(config) if isinstance(config, str) else config
+        self.pg_config = self.config["source_sqlserver"]
+        self.engine = self.connect()
 
-    def connect(self):
-        try:
-            self.engine = create_engine(self.connection_url)
-            print("Connected!")
+
+
+    def connect (self, path: str) -> dict:
+        try: 
+            with open(path, "r") as file:
+                return yaml.safe_load(file)
         except Exception as e:
-            print(f"Connection failed: {e}")
+            print(f"Error while reading config file:{e}")
+            raise 
 
     def execute_query(self, query):
         if self.engine:
@@ -33,7 +34,7 @@ class Extractor:
             print("Connection closed.")
 
     def fetch_tables_as_array(self):
-        table_names = [
+        query_tables = [
             "MOVING.DestinyByAddress",
             "MOVING.DistributionCenterByAddress",
             "PEOPLE.Employee",
@@ -42,30 +43,12 @@ class Extractor:
         ]
 
         tables = [] # all tables
-        for table in table_names:
-            query = f"SELECT * FROM {table}"
+        for query in query_tables:
             df = self.execute_query(query)
             if df is not None:
                 tables.append(df)
             else:
-                print(f"Failed to retrieve data from {table}")
+                print(f"Failed to retrieve data from {query}")
         
         return tables
 
-
-# Usage example
-if __name__ == "__main__":
-    extractor = Extractor(
-        driver="ODBC Driver 17 for SQL Server",
-        server="macotech-database-1.c9ccouqwg4es.us-east-2.rds.amazonaws.com,1433",
-        database="MacoDatabase",
-        uid="Estancia2",
-        pwd="0n55KV/zuxh\\"
-    )
-    
-    extractor.connect()
-    tables = extractor.fetch_tables_as_array()
-    for idx, table_df in enumerate(tables):
-        print(f'TABLE {idx + 1}:')
-        print(table_df) # the important one
-        print("\n")
