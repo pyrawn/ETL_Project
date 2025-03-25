@@ -19,6 +19,9 @@ class ETL:
         with open(path, "r") as f:
             return yaml.safe_load(f)
 
+    def run(self):
+        pass
+
     def run_extractor(self):
         print(self.extractor.fetch_tables_as_array())
 
