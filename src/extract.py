@@ -57,7 +57,7 @@ class Extractor:
             "SELECT f.FreightID, f.code AS FreightCode, f.freightDate, dba.destinyId, dba.addressId AS DestinationCode, dba.code AS DestinationAddress FROM MacoDatabase.MOVING.Freight f INNER JOIN Macodatabase.MOVING.DestinyByAddress dba ON f.destinyCodeId = dba.destinyId;",
             "SELECT * FROM MOVING.Freight f INNER JOIN PEOPLE.EmployeeStatus es ON f.status = es.employeeStatusId;",
             "SELECT * FROM MacoDatabase.MOVING.Freight f INNER JOIN MacoDatabase.PRODUCTION.Machine	m ON f.companyId = m.companyId;",
-            "SELECT * FROM MacoDatabase.MOVING.Freight f INNER JOIN MacoDatabase.GENERAL.ServiceProvisionType sptON f.companyId = spt.companyId;"
+            "SELECT * FROM MacoDatabase.MOVING.Freight f INNER JOIN MacoDatabase.GENERAL.ServiceProvisionType spt ON f.companyId = spt.companyId;"
         ]
         '''
         Key Queries:
@@ -103,4 +103,5 @@ class Extractor:
                 print(f"Failed to retrieve data from {query}")
         
         return tables
+
 

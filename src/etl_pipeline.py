@@ -25,7 +25,7 @@ class ETL:
     def run_extractor(self):
         print(self.extractor.fetch_tables_as_array())
 
-    def run_tranform(self):
+    def run_transform(self):
         print("Starting ETL process")
 
         df = self._generate_dummy_data()
@@ -33,7 +33,7 @@ class ETL:
         df.columns = df.columns.str.lower()
 
         if df.empty:
-            print("The DataFrame is empy. No data to load.")
+            print("The DataFrame is empty. No data to load.")
         else: 
             self.loader.load_to_postgres(df)
             self.loader.export_insert_scripts(df)
