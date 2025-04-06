@@ -1,7 +1,7 @@
 source_sqlserver:
   server: macotech-database-1.c9ccouqwg4es.us-east-2.rds.amazonaws.com
   port: 1433
-  database: nombre_de_tu_bd
+  database: MacoDatabase
   username: Estancia2
   password: "0n55KV/zuxh\\"
   driver: ODBC Driver 17 for SQL Server
